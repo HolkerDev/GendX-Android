@@ -1,7 +1,8 @@
-package com.example.gendx_android
+package com.example.gendx_android.functionalities.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.gendx_android.R
 
 class MainActivity : AppCompatActivity() {
 
