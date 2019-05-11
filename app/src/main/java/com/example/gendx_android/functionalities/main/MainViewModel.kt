@@ -1,4 +1,7 @@
 package com.example.gendx_android.functionalities.main
 
-class MainViewModel {
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+
+class MainViewModel : ViewModel() {
 }
