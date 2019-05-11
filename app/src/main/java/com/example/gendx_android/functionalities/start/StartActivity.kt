@@ -29,21 +29,20 @@ class StartActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, com.example.gendx_android.R.layout.activity_start)
         viewModel = ViewModelProviders.of(this).get(StartViewModel::class.java)
         binding.startViewModel = viewModel
-        initObservables()
         //endregion
 
-        waitFor()
+        waitForStart()
     }
 
-    private fun initObservables() {
-        //TODO: Init observable for viewModel event
-    }
 
+    /* Start MainActivity */
     private fun goToMain() {
         val i = Intent(this, MainActivity::class.java)
         startActivity(i)
+        finish()
     }
 
+    /* Check for camera permission*/
     private fun checkPermissions() {
         if (ContextCompat.checkSelfPermission(
                 applicationContext,
@@ -67,8 +66,9 @@ class StartActivity : AppCompatActivity() {
         }
     }
 
-    private fun waitFor() {
-        object : CountDownTimer(3000, 1000) {
+    /* Wait for accessing permissions */
+    private fun waitForStart() {
+        object : CountDownTimer(1000, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
             }
