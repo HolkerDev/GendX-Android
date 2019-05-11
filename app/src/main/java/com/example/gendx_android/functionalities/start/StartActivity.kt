@@ -1,16 +1,18 @@
 package com.example.gendx_android.functionalities.start
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.widget.Toast
+import android.os.CountDownTimer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import com.example.gendx_android.R
 import com.example.gendx_android.databinding.ActivityStartBinding
+import com.example.gendx_android.functionalities.main.MainActivity
+
 
 class StartActivity : AppCompatActivity() {
 
@@ -21,21 +23,25 @@ class StartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_start)
+        setContentView(com.example.gendx_android.R.layout.activity_start)
 
         //region init viewModel
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_start)
+        binding = DataBindingUtil.setContentView(this, com.example.gendx_android.R.layout.activity_start)
         viewModel = ViewModelProviders.of(this).get(StartViewModel::class.java)
         binding.startViewModel = viewModel
         initObservables()
         //endregion
 
-        checkPermissions()
-
+        waitFor()
     }
 
     private fun initObservables() {
         //TODO: Init observable for viewModel event
+    }
+
+    private fun goToMain() {
+        val i = Intent(this, MainActivity::class.java)
+        startActivity(i)
     }
 
     private fun checkPermissions() {
@@ -45,6 +51,8 @@ class StartActivity : AppCompatActivity() {
             ) == PackageManager.PERMISSION_DENIED
         ) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA)
+        } else {
+            goToMain()
         }
     }
 
@@ -52,10 +60,22 @@ class StartActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CAMERA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(applicationContext, "Persmission granted", Toast.LENGTH_LONG).show()
+                goToMain()
             } else {
                 finish()
             }
         }
+    }
+
+    private fun waitFor() {
+        object : CountDownTimer(3000, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+            }
+
+            override fun onFinish() {
+                checkPermissions()
+            }
+        }.start()
     }
 }
