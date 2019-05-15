@@ -1,0 +1,12 @@
+{
+  "accuracy": "85%",
+  "format": "(1200, 630)",
+  "people": {
+    "0": {
+      "gender": "man"
+    },
+    "1": {
+      "gender": "man"
+    }
+  }
+}
