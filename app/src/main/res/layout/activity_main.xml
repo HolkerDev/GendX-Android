@@ -16,6 +16,14 @@
         android:background="@color/colorPrimary"
         android:orientation="vertical">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            tools:layout_editor_absoluteX="155dp"
+            tools:layout_editor_absoluteY="210dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

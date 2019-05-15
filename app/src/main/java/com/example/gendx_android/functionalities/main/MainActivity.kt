@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity() {
                         // TODO: Implement recycler view for this
                         Toast.makeText(applicationContext, genders?.get(0)?.gender, Toast.LENGTH_LONG).show()
                     }
-
                 })
             }
             GendXType.One -> {
