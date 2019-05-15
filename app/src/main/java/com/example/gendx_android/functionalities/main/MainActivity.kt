@@ -14,6 +14,9 @@ import com.example.gendx_android.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import android.util.Base64
 import android.util.Log
+import android.view.View
+import android.widget.Toast
+import com.example.gendx_android.data.model.ResponseMany
 import com.example.gendx_android.data.model.ResponseOne
 import com.example.gendx_android.data.repo.GendXApiService
 import retrofit2.Call
@@ -52,25 +55,52 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getSendData() {
+    private fun getGender(type: GendXType) {
         retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val service = retrofit.create(GendXApiService::class.java)
-        val call = service.getGenderOne(result)
-        call.enqueue(object : Callback<ResponseOne> {
-            override fun onFailure(call: Call<ResponseOne>, t: Throwable) {
-                Log.i("MyLog", t.message)
 
+        when (type) {
+            GendXType.Many -> {
+                val callMany = service.getGenderMany(result)
+                callMany.enqueue(object : Callback<ResponseMany> {
+                    override fun onFailure(call: Call<ResponseMany>, t: Throwable) {
+                        hideProgressBar()
+                        Log.i(TAG, t.message)
+                        Toast.makeText(applicationContext, "Error, try again later", Toast.LENGTH_LONG).show()
+                    }
+
+                    override fun onResponse(call: Call<ResponseMany>, response: Response<ResponseMany>) {
+                        hideProgressBar()
+                        val genders = response.body()?.people
+                        // TODO: Implement recycler view for this
+                        Toast.makeText(applicationContext, genders?.get(0)?.gender, Toast.LENGTH_LONG).show()
+                    }
+
+                })
             }
+            GendXType.One -> {
+                val callOne = service.getGenderOne(result)
+                callOne.enqueue(object : Callback<ResponseOne> {
+                    override fun onFailure(call: Call<ResponseOne>, t: Throwable) {
+                        hideProgressBar()
+                        Log.i(TAG, t.message)
+                        Toast.makeText(applicationContext, "Error, try again later", Toast.LENGTH_LONG).show()
+                    }
 
-            override fun onResponse(call: Call<ResponseOne>, response: Response<ResponseOne>) {
-                Log.i("MyLog", response.body()?.gender)
+                    override fun onResponse(call: Call<ResponseOne>, response: Response<ResponseOne>) {
+                        hideProgressBar()
+                        val gender = response.body()?.gender
+                        Log.i("MyLog", response.body()?.gender)
+                        showOneResult(response.body()?.gender!!)
+//                        Toast.makeText(applicationContext, gender, Toast.LENGTH_LONG).show()
+                    }
+                })
             }
-
-        })
+        }
     }
 
 
@@ -79,10 +109,10 @@ class MainActivity : AppCompatActivity() {
             .setMessage("Choose type")
             .setCancelable(true)
             .setPositiveButton("One person") { dialog, which ->
-                getSendData()
+                getGender(GendXType.One)
             }
             .setNegativeButton("More then one person") { dialog, which ->
-                //TODO: Add Retrodit to /api/recognize_with_opencv
+                getGender(GendXType.Many)
             }
             .create()
             .show()
@@ -110,15 +140,17 @@ class MainActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && data != null) {
             when (requestCode) {
                 REQUEST_TAKE_PHOTO -> {
+                    showProgressBar()
+                    hideResults()
                     val imageBitmap = data.extras?.get("data") as Bitmap
-                    main_iv_photo.setImageBitmap(imageBitmap)
                     result = convertToBase64(imageBitmap)
                     Log.i(TAG, result)
                     chooseType()
                 }
                 REQUEST_OPEN_GALLERY -> {
+                    showProgressBar()
+                    hideResults()
                     val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, data.data)
-                    main_iv_photo.setImageBitmap(bitmap)
                     result = convertToBase64(bitmap)
                     Log.i(TAG, result)
                     chooseType()
@@ -128,6 +160,16 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    private fun showProgressBar() {
+        main_progress_bar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        main_progress_bar.visibility = View.INVISIBLE
+        main_tv_one_prediction.visibility = View.INVISIBLE
+        main__tv_probability.visibility = View.INVISIBLE
+    }
+
     private fun convertToBase64(bitmap: Bitmap): String {
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
@@ -135,5 +177,14 @@ class MainActivity : AppCompatActivity() {
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 
+    private fun hideResults() {
+        main_tv_one_prediction.visibility = View.INVISIBLE
+        main__tv_probability.visibility = View.INVISIBLE
+    }
 
+    private fun showOneResult(prediction: String) {
+        main__tv_probability.visibility = View.VISIBLE
+        main_tv_one_prediction.visibility = View.VISIBLE
+        main_tv_one_prediction.text = prediction
+    }
 }

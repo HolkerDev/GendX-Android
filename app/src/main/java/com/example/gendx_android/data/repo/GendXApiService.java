@@ -10,7 +10,7 @@ import java.io.ByteArrayOutputStream;
 
 public interface GendXApiService {
     @GET("/api/recognize_with_opencv")
-    Call<ResponseMany> getGenderMany(@Query("image") ByteArrayOutputStream image);
+    Call<ResponseMany> getGenderMany(@Query("image") String image);
 
     @GET("/api/recognize")
     Call<ResponseOne> getGenderOne(@Query("image") String image);

@@ -33,14 +33,44 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:targetApi="jelly_bean" />
 
-        <ImageView
-            android:id="@+id/main_iv_photo"
+        <TextView
+            android:id="@+id/main__tv_probability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="29dp"
+            android:layout_marginLeft="29dp"
+            android:layout_marginTop="217dp"
+            android:text="There is 85% probability that it's"
+            android:textColor="@color/colorWhite"
+            android:textSize="25sp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/main_tv_one_prediction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="177dp"
+            android:layout_marginLeft="177dp"
+            android:layout_marginTop="269dp"
+            android:text="MAN"
+            android:textColor="@color/colorWhite"
+            android:textSize="25sp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ProgressBar
+            android:id="@+id/main_progress_bar"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="155dp"
             android:layout_marginLeft="155dp"
             android:layout_marginTop="315dp"
-            android:scaleType="center"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
