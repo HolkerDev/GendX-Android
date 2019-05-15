@@ -31,7 +31,7 @@ class StartActivity : AppCompatActivity() {
         binding.startViewModel = viewModel
         //endregion
 
-        waitForStart()
+        checkPermissions()
     }
 
 
@@ -49,7 +49,7 @@ class StartActivity : AppCompatActivity() {
                 Manifest.permission.CAMERA
             ) == PackageManager.PERMISSION_DENIED
         ) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA)
+            waitForStart()
         } else {
             goToMain()
         }
@@ -66,6 +66,10 @@ class StartActivity : AppCompatActivity() {
         }
     }
 
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA)
+    }
+
     /* Wait for accessing permissions */
     private fun waitForStart() {
         object : CountDownTimer(1000, 1000) {
@@ -74,7 +78,7 @@ class StartActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                checkPermissions()
+                requestPermission()
             }
         }.start()
     }
