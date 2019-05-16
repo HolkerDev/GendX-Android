@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="startViewModel"
+            type="com.example.gendx_android.functionalities.start.StartViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:gravity="center">
+        <!--Logo-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/itim_regular"
+            android:text="@string/app_name"
+            android:textColor="@color/colorWhite"
+            android:textSize="45sp"
+            tools:targetApi="jelly_bean" />
+
+    </LinearLayout>
+
+</layout>
