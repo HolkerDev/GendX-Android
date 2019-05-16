@@ -16,15 +16,20 @@ import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.gendx_android.data.model.Person
 import com.example.gendx_android.data.model.ResponseMany
 import com.example.gendx_android.data.model.ResponseOne
 import com.example.gendx_android.data.repo.GendXApiService
+import com.example.gendx_android.functionalities.main.model.GenderAdapter
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.*
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +40,8 @@ class MainActivity : AppCompatActivity() {
     private val REQUEST_OPEN_GALLERY = 26
 
     private val BASE_URL = "http://18.188.155.84:5000"
+
+    private lateinit var mAdapter: GenderAdapter
 
     lateinit var retrofit: Retrofit
 
@@ -52,12 +59,22 @@ class MainActivity : AppCompatActivity() {
         binding?.mainViewModel = viewModel
         initObservables()
         //endregion
+        mAdapter = GenderAdapter(arrayListOf(), resources)
+        main_rv_list.layoutManager = LinearLayoutManager(applicationContext)
+        main_rv_list.adapter = mAdapter
     }
 
 
     private fun getGender(type: GendXType) {
+
+        val okHttpClient = OkHttpClient.Builder()
+            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .build();
+
         retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -76,8 +93,7 @@ class MainActivity : AppCompatActivity() {
                     override fun onResponse(call: Call<ResponseMany>, response: Response<ResponseMany>) {
                         hideProgressBar()
                         val genders = response.body()?.people
-                        // TODO: Implement recycler view for this
-                        Toast.makeText(applicationContext, genders?.get(0)?.gender, Toast.LENGTH_LONG).show()
+                        showManyResults((genders as ArrayList<Person>?)!!)
                     }
                 })
             }
@@ -179,6 +195,18 @@ class MainActivity : AppCompatActivity() {
     private fun hideResults() {
         main_tv_one_prediction.visibility = View.INVISIBLE
         main__tv_probability.visibility = View.INVISIBLE
+        main_rv_list.visibility = View.INVISIBLE
+    }
+
+    private fun showManyResults(persons: ArrayList<Person>) {
+        if (persons.size >= 0) {
+            main_rv_list.visibility = View.VISIBLE
+            mAdapter.items = persons
+            mAdapter.notifyDataSetChanged()
+        } else {
+            main__tv_probability.visibility = View.VISIBLE
+            main__tv_probability.text = "No persons recognized"
+        }
     }
 
     private fun showOneResult(prediction: String) {

@@ -9,10 +9,10 @@ import com.example.gendx_android.R
 import com.example.gendx_android.data.model.Person
 import java.util.zip.Inflater
 
-class GenderAdapter(var items: ArrayList<Person>) : RecyclerView.Adapter<GenderViewHolder>() {
+class GenderAdapter(var items: ArrayList<Person>, val resources: Resources) : RecyclerView.Adapter<GenderViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenderViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return GenderViewHolder(inflater, parent)
+        return GenderViewHolder(inflater, parent, resources)
     }
 
     override fun getItemCount(): Int {
@@ -21,7 +21,6 @@ class GenderAdapter(var items: ArrayList<Person>) : RecyclerView.Adapter<GenderV
 
     override fun onBindViewHolder(holder: GenderViewHolder, position: Int) {
         val person = items[position]
-        holder.bind(person)
+        holder.bind(person, position + 1)
     }
-
 }

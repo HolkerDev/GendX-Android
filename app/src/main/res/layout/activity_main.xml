@@ -11,20 +11,30 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            tools:layout_editor_absoluteX="155dp"
-            tools:layout_editor_absoluteY="210dp">
+            android:id="@+id/main_rv_list"
+            android:layout_width="300dp"
+            android:layout_height="450dp"
+            android:layout_marginStart="55dp"
+            android:layout_marginLeft="55dp"
+            android:layout_marginTop="190dp"
+            android:layout_marginEnd="55dp"
+            android:layout_marginRight="55dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="53dp"
@@ -47,26 +57,30 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="29dp"
             android:layout_marginLeft="29dp"
-            android:layout_marginTop="217dp"
+            android:layout_marginTop="130dp"
+            android:layout_marginEnd="29dp"
+            android:layout_marginRight="29dp"
             android:text="There is 85% probability that it's"
             android:textColor="@color/colorWhite"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
             android:id="@+id/main_tv_one_prediction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="177dp"
-            android:layout_marginLeft="177dp"
-            android:layout_marginTop="269dp"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="304dp"
+            android:gravity="center"
             android:text="MAN"
             android:textColor="@color/colorWhite"
             android:textSize="25sp"
             android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -77,8 +91,11 @@
             android:layout_height="100dp"
             android:layout_marginStart="155dp"
             android:layout_marginLeft="155dp"
-            android:layout_marginTop="315dp"
+            android:layout_marginTop="365dp"
+            android:layout_marginEnd="156dp"
+            android:layout_marginRight="156dp"
             android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
